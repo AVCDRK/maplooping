@@ -6,6 +6,12 @@ output: html_document: default
  ---
 
 <!-- We recommend you use git branches -- create a separate branch for each major section i.e. Introduction, Methods, Results, Inferential Results, and Discussion and Conclusions - leave the YAML block untouched until the final merge where you put in your own name !-->
+```{r, include=FALSE}
+require(tidyverse)
+source("winTorF.R")
+source("bprofit.R")
+source("bprofit2.R")
+```
 
 # Introduction
 
@@ -21,6 +27,19 @@ output: html_document: default
 #Profit Estimate
 
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
+```{r}
+ntodo=1137
+myclsize <- rep(29,times=ntodo)
+mywins <- sum(map_dbl(myclsize,winTorF))
+myoutput<-mywins-2*(ntodo-mywins)
+myoutput
+```
+```{r}
+#bprofit has a built in for loop
+myclsize <- rep(35,times=250)
+myoutput <- map_dbl(myclsize,bprofit)
+hist(myoutput)
+```
 
 
 # Confidence interval of Brownlows earning
@@ -31,4 +50,10 @@ output: html_document: default
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
+```{r}
+#bprofit2 uses map instead of for loop
+myclsize <- c(rep(20,times=250),rep(35,times=100))
+myoutput <- map_dbl(myclsize,bprofit2,times=1137,odds=1.5)
+hist(myoutput)
+```
 
